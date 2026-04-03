@@ -46,7 +46,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="shadow-lg sticky top-0 z-50">
+    <nav className="shadow-lg sticky top-0 z-50 bg-white/95 backdrop-blur border-b">
       <div className="px-4 py-3 flex justify-between items-center">
         <Link
           className="font-bold text-xl tracking-wide"
