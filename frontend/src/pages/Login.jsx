@@ -1,38 +1,43 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/authSlice";
 import Swal from "sweetalert2";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email === "test@baka.com" && password === "123") {
-      localStorage.setItem("token", "dummy-token");
+      dispatch(loginSuccess({ token: "dummy-token", user: { email } }));
       Swal.fire({
         icon: "success",
         title: "Login Successful",
         text: "Welcome back!",
-        confirmButtonColor: "#2563eb",
+        timer: 1000,
+        showConfirmButton: false,
       });
       setTimeout(() => {
         navigate("/dashboard");
-      }, 1500);
+      }, 1000);
     } else {
       Swal.fire({
         icon: "error",
         title: "Login Failed",
         text: "Invalid email or password",
-        confirmButtonColor: "#dc2626",
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
   };
 
   return (
     <div className="min-h-[92vh] flex items-center justify-center bg-gray-100 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm sm:max-w-md bg-white p-5 sm:p-6 md:p-8 shadow-2xl rounded-2xl border border-gray-200">
+      <div className="w-full max-w-sm sm:max-w-md bg-gray-100 p-5 sm:p-6 md:p-8 shadow-2xl rounded-2xl border border-gray-200">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center text-gray-800">
           Login
         </h2>

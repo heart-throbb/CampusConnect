@@ -1,19 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../store/authSlice";
 import { Menu, X } from "lucide-react";
 import Swal from "sweetalert2";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-
   const navigate = useNavigate();
-
-  // Check token on load (frontend only)
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setLoggedIn(!!token);
-  }, []);
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const loggedIn = !!token;
 
   const handleLogout = () => {
     Swal.fire({
@@ -26,8 +23,7 @@ function Navbar() {
       confirmButtonText: "Yes, Logout",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        setLoggedIn(false);
+        dispatch(logout());
         Swal.fire({
           icon: "success",
           title: "Logged out",
@@ -46,7 +42,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="shadow-lg sticky top-0 z-50 bg-white/95 backdrop-blur border-b">
+    <nav className="shadow-lg sticky top-0 z-50 bg-gray-100 backdrop-blur border-b">
       <div className="px-4 py-3 flex justify-between items-center">
         <Link
           className="font-bold text-xl tracking-wide"
@@ -56,20 +52,17 @@ function Navbar() {
           CampusConnect
         </Link>
         <div className="hidden md:flex space-x-6 font-medium">
-          <Link
-            className="hover:text-gray-400 transition hover:scale-110"
-            to="/"
-          >
+          <Link className="hover:font-bold transition hover:scale-110" to="/">
             Home
           </Link>
           <Link
-            className="hover:text-gray-400 transition hover:scale-110"
+            className="hover:font-bold transition hover:scale-110"
             to="/dashboard"
           >
             Dashboard
           </Link>
           <Link
-            className="hover:text-gray-400 transition hover:scale-110"
+            className="hover:font-bold transition hover:scale-110"
             to="/questions"
           >
             Questions
@@ -77,14 +70,14 @@ function Navbar() {
           {!loggedIn ? (
             <>
               <Link
-                className="hover:text-gray-400 transition hover:scale-110"
+                className="hover:font-bold transition hover:scale-110"
                 to="/login"
               >
                 Login
               </Link>
 
               <Link
-                className="hover:text-gray-400 transition hover:scale-110"
+                className="hover:font-bold transition hover:scale-110"
                 to="/signup"
               >
                 Signup

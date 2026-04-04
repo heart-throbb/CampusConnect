@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div className="min-h-[92vh] flex flex-col px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="min-h-[92vh] bg-gray-100 flex flex-col px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col justify-center items-center text-center flex-grow py-10 sm:py-16">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
           Welcome to CampusConnect
