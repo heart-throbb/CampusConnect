@@ -4,8 +4,6 @@ import Swal from "sweetalert2";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchPosts,
-  fetchAnswers,
   submitAnswer,
   submitVote,
   deleteAnswer,
@@ -19,28 +17,15 @@ function PostDetails() {
   const [newAnswer, setNewAnswer] = useState("");
   const [isPrefilled, setIsPrefilled] = useState(false);
   const currentUser = useSelector((state) => state.auth.user?.email || "guest");
-  const postsStatus = useSelector((state) => state.posts.status);
-  const topVotes = answers.length > 0 ? answers[0].votes : 0;
   const post = useSelector((state) =>
     state.posts.items.find((p) => p._id === postId),
-  );
-  const answersStatus = useSelector(
-    (state) => state.posts.answersStatus[postId],
   );
   const answers = useSelector(
     (state) => state.posts.answersByPost[postId] || [],
   );
+  const topVotes = answers.length > 0 ? answers[0].votes : 0;
   const existingAnswer = answers.find((a) => a.user?.email === currentUser);
-  useEffect(() => {
-    if (postsStatus === "idle") {
-      dispatch(fetchPosts());
-    }
-  }, [postsStatus, dispatch]);
-  useEffect(() => {
-    if (!answersStatus || answersStatus === "idle") {
-      dispatch(fetchAnswers(postId));
-    }
-  }, [answersStatus, dispatch, postId]);
+
   useEffect(() => {
     if (existingAnswer && !isPrefilled) {
       setNewAnswer(existingAnswer.content);
@@ -50,19 +35,26 @@ function PostDetails() {
   const handleAnswerSubmit = (e) => {
     e.preventDefault();
     if (!newAnswer.trim()) return;
-    dispatch(submitAnswer({ postId, answer: newAnswer })).then(() => {
-      Swal.fire({
-        icon: "success",
-        title: existingAnswer ? "Answer Updated" : "Answer Submitted",
-        timer: 800,
-        showConfirmButton: false,
-      });
-      if (!existingAnswer) setNewAnswer("");
+    dispatch(
+      submitAnswer({
+        postId,
+        answer: newAnswer,
+        currentUserEmail: currentUser,
+      }),
+    );
+    Swal.fire({
+      icon: "success",
+      title: existingAnswer ? "Answer Updated" : "Answer Submitted",
+      timer: 800,
+      showConfirmButton: false,
     });
+    if (!existingAnswer) setNewAnswer("");
   };
 
   const handleVote = (id, type) => {
-    dispatch(submitVote({ postId, answerId: id, type }));
+    dispatch(
+      submitVote({ postId, answerId: id, type, currentUserEmail: currentUser }),
+    );
   };
 
   const handleDeleteAnswer = (answerId) => {
@@ -100,24 +92,23 @@ function PostDetails() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deletePost(postId)).then(() => {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your post has been deleted.",
-            icon: "success",
-            timer: 800,
-            showConfirmButton: false,
-          });
-          navigate("/dashboard");
+        dispatch(deletePost(postId));
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your post has been deleted.",
+          icon: "success",
+          timer: 800,
+          showConfirmButton: false,
         });
+        navigate("/dashboard");
       }
     });
   };
 
-  if (!post || postsStatus === "loading" || answersStatus === "loading") {
+  if (!post) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="w-12 h-12 border-4 border-gray-200 border-t-indigo-500 rounded-full animate-spin"></div>
+        <div className="text-xl font-bold text-gray-500">Post not found</div>
       </div>
     );
   }
@@ -166,7 +157,7 @@ function PostDetails() {
                 return (
                   <div
                     key={answer._id}
-                    className={`p-4 rounded border hover:scale-110 transition duration-300 shadow-sm ${
+                    className={`p-4 rounded-xl border hover:scale-110 hover:border-blue-300 transition duration-300 shadow-sm ${
                       isBest
                         ? "bg-green-50 border-green-400"
                         : "bg-gray-50 border-gray-200"

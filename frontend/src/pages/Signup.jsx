@@ -9,19 +9,15 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Front-end validation check
     if (!email || !password) {
       Swal.fire({
         title: "Error!",
         text: "Please fill in all fields",
         icon: "error",
-        confirmButtonColor: "#2563eb", // blue-600
+        confirmButtonColor: "#2563eb",
       });
       return;
     }
-
-    // Simulating a successful frontend action
     Swal.fire({
       title: "Account Created!",
       text: "You have successfully signed up.",
@@ -34,8 +30,8 @@ function Signup() {
   };
 
   return (
-    <div className="flex justify-center items-center grow lg:min-h-[92vh] px-4">
-      <div className="w-full max-w-md mx-auto mt-10 bg-white p-6 drop-shadow-2xl rounded-2xl transform -translate-y-6 border border-gray-300">
+    <div className="flex justify-center items-center grow lg:min-h-[92vh] px-4 bg-gray-100">
+      <div className="w-full max-w-md mx-auto mt-10 bg-gray-100 p-6 drop-shadow-2xl rounded-2xl transform -translate-y-6 border border-gray-300">
         <h2 className="text-2xl font-bold mb-4">Signup</h2>
         <form onSubmit={handleSubmit}>
           <input
@@ -52,35 +48,34 @@ function Signup() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button 
+          <button
             type="submit"
             className="w-full bg-blue-600 text-white p-2 rounded hover:cursor-pointer hover:bg-blue-700 hover:scale-95 transition-transform hover:shadow-lg"
           >
             Create Account
           </button>
         </form>
-        <div className="flex justify-center items-center gap-1 mt-5">
-          <Link 
-            className="hover:underline hover:cursor-pointer hover:font-bold hover:scale-105 transition-all text-sm sm:text-base" 
+        <div className="flex justify-center mt-4 sm:mt-6 text-sm sm:text-base text-gray-600">
+          <Link
+            className="hover:underline hover:font-semibold hover:scale-105 transition flex gap-1"
             to="/login"
           >
             Already has Account
+            <svg
+              className="w-3 h-3 -translate-y-[1px]"
+              viewBox="0 0 11 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.70985 4.5H7.7804M7.7804 4.5V10.5705M7.7804 4.5L0.780396 11.5"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </Link>
-          <svg
-            className="translate-inline-px scale-inline-100 -translate-y-[2px] hover:underline hover:font-bold"
-            width="11"
-            viewBox="0 0 11 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1.70985 4.5H7.7804M7.7804 4.5V10.5705M7.7804 4.5L0.780396 11.5"
-              stroke="currentColor"
-              strokeWidth="1.3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
         </div>
       </div>
     </div>

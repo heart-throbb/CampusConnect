@@ -86,7 +86,7 @@ function Navbar() {
           ) : (
             <button
               onClick={handleLogout}
-              className="hover:text-red-600 transition hover:scale-110 text-red-500"
+              className="hover:text-red-600 transition hover:scale-110 hover:font-bold text-red-500"
             >
               Logout
             </button>
