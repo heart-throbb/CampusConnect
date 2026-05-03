@@ -3,7 +3,7 @@ const Post = require("../models/Post");
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("user", "name email")
+      .populate("user", "name email") //getting name and email only of usr
       .sort({ createdAt: -1 });
     res.json(posts);
   } catch (error) {
@@ -14,8 +14,8 @@ const getPosts = async (req, res) => {
 const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate("user", "name email")
-      .populate("answers.user", "name email");
+      .populate("user", "name email") //getting name and email only of usr
+      .populate("answers.user", "name email"); //getting name and email only of usr
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
@@ -27,6 +27,7 @@ const getPostById = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
+    // destructing only req thigns form bodu
     const { title, content, tags } = req.body;
     const newPost = new Post({
       title,
@@ -102,6 +103,7 @@ const deleteAnswer = async (req, res) => {
 
 const voteAnswer = async (req, res) => {
   try {
+    // destructing only req thign form bodu
     const { type } = req.body;
     const post = await Post.findById(req.params.id);
     if (!post) {
@@ -111,10 +113,8 @@ const voteAnswer = async (req, res) => {
     if (!answer) {
       return res.status(404).json({ message: "Answer not found" });
     }
-
     const currentUserId = req.user.userId;
     const previousVoteType = answer.votesMap.get(currentUserId);
-
     if (previousVoteType === type) {
       answer.votesMap.delete(currentUserId);
       answer.votes += type === "up" ? -1 : 1;

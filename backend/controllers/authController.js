@@ -5,12 +5,14 @@ const User = require("../models/User");
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    // checking if user already exists
     let existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(400)
         .json({ message: "A user with this email already exists." });
     }
+    // hasing and saving the usr
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new User({ name, email, password: hashedPassword });
@@ -25,14 +27,17 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    // finding usr
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
+    // chekcing pass
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
+    // gen token
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
