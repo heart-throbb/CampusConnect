@@ -111,7 +111,7 @@ function CreatePost() {
                 Title
               </label>
               <input
-                className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-100"
                 placeholder="e.g. How do I center a div?"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -123,7 +123,7 @@ function CreatePost() {
               </label>
               <textarea
                 rows="5"
-                className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none bg-white"
+                className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none bg-gray-100"
                 placeholder="Describe your problem in detail..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}

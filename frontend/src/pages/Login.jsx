@@ -50,7 +50,7 @@ function Login() {
 
   return (
     <div className="min-h-[92vh] flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-sm bg-white p-6 shadow-2xl rounded-2xl border border-gray-200">
+      <div className="w-full max-w-sm bg-gray-100 p-6 shadow-2xl rounded-2xl border border-gray-200">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
           Login
         </h2>

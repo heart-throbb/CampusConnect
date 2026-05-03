@@ -29,7 +29,6 @@ function App() {
         console.error("Failed to fetch posts:", error);
       }
     };
-
     fetchPosts();
   }, [dispatch]);
 

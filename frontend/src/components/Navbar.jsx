@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const loggedIn = !!token;
@@ -41,6 +42,16 @@ function Navbar() {
     setMenuOpen(false);
   };
 
+  const getDesktopLinkClass = (path) => {
+    const isActive = location.pathname === path;
+    return `transition hover:scale-110 ${isActive ? "font-bold text-black" : "hover:font-bold"}`;
+  };
+
+  const getMobileLinkClass = (path) => {
+    const isActive = location.pathname === path;
+    return `hover:text-gray-200 ${isActive ? "font-bold text-white" : "text-gray-400"}`;
+  };
+
   return (
     <nav className="shadow-lg sticky top-0 z-50 bg-gray-100 backdrop-blur border-b">
       <div className="px-4 py-3 flex justify-between items-center">
@@ -52,34 +63,21 @@ function Navbar() {
           CampusConnect
         </Link>
         <div className="hidden md:flex space-x-6 font-medium">
-          <Link className="hover:font-bold transition hover:scale-110" to="/">
+          <Link className={getDesktopLinkClass("/")} to="/">
             Home
           </Link>
-          <Link
-            className="hover:font-bold transition hover:scale-110"
-            to="/dashboard"
-          >
+          <Link className={getDesktopLinkClass("/dashboard")} to="/dashboard">
             Dashboard
           </Link>
-          <Link
-            className="hover:font-bold transition hover:scale-110"
-            to="/questions"
-          >
+          <Link className={getDesktopLinkClass("/questions")} to="/questions">
             Questions
           </Link>
           {!loggedIn ? (
             <>
-              <Link
-                className="hover:font-bold transition hover:scale-110"
-                to="/login"
-              >
+              <Link className={getDesktopLinkClass("/login")} to="/login">
                 Login
               </Link>
-
-              <Link
-                className="hover:font-bold transition hover:scale-110"
-                to="/signup"
-              >
+              <Link className={getDesktopLinkClass("/signup")} to="/signup">
                 Signup
               </Link>
             </>
@@ -99,23 +97,23 @@ function Navbar() {
       </div>
       {/* mob menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-700 px-4 pb-4 flex flex-col space-y-3 mt-2">
+        <div className="md:hidden bg-gray-800 text-gray-400 px-4 pb-4 pt-2 shadow-inner flex flex-col space-y-4 mt-2">
           <Link
-            className="hover:text-gray-200"
+            className={getMobileLinkClass("/")}
             to="/"
             onClick={handleLinkClick}
           >
             Home
           </Link>
           <Link
-            className="hover:text-gray-200"
+            className={getMobileLinkClass("/dashboard")}
             to="/dashboard"
             onClick={handleLinkClick}
           >
             Dashboard
           </Link>
           <Link
-            className="hover:text-gray-200"
+            className={getMobileLinkClass("/questions")}
             to="/questions"
             onClick={handleLinkClick}
           >
@@ -124,14 +122,14 @@ function Navbar() {
           {!loggedIn ? (
             <>
               <Link
-                className="hover:text-gray-200"
+                className={getMobileLinkClass("/login")}
                 to="/login"
                 onClick={handleLinkClick}
               >
                 Login
               </Link>
               <Link
-                className="hover:text-gray-200"
+                className={getMobileLinkClass("/signup")}
                 to="/signup"
                 onClick={handleLinkClick}
               >

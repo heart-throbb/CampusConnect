@@ -157,7 +157,7 @@ function Questions() {
               </div>
             ))
           ) : (
-            <div className="text-center py-20 text-gray-500 bg-white rounded-xl border-2 border-dashed border-gray-300">
+            <div className="text-center bg-gray-100 py-20 text-gray-500 rounded-xl border-2 border-dashed border-gray-300">
               <p className="text-lg font-medium">No questions found.</p>
               <p className="text-sm mt-1">
                 Try a different search term or tag.

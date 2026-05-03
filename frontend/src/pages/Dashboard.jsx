@@ -152,7 +152,7 @@ function Dashboard() {
               className={`px-3 py-1 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer ${
                 activeTag === null
                   ? "bg-gray-700 text-white border-gray-800"
-                  : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                  : "bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-50"
               }`}
             >
               All
@@ -175,7 +175,7 @@ function Dashboard() {
             filtered.map((post) => (
               <div
                 key={post._id}
-                className="bg--gray-100 p-4 sm:p-5 shadow-md rounded-xl border hover:border-blue-300 border-gray-200 hover:scale-[1.02] transition hover:shadow-xl duration-300 bg-white"
+                className="bg--gray-100 p-4 sm:p-5 shadow-md rounded-xl border hover:border-blue-300 border-gray-200 hover:scale-[1.02] transition hover:shadow-xl duration-300 bg-gray-100"
               >
                 <h3 className="font-bold text-lg sm:text-xl mb-1">
                   {post.title}
@@ -221,7 +221,7 @@ function Dashboard() {
               </div>
             ))
           ) : (
-            <div className="text-center py-20 text-gray-500 bg-white rounded-xl border-2 border-dashed border-gray-300">
+            <div className="text-center py-20 text-gray-500 bg-gray-100 rounded-xl border-2 border-dashed border-gray-300">
               {myPosts.length === 0 ? (
                 <>
                   <p className="text-lg font-medium">No questions yet.</p>

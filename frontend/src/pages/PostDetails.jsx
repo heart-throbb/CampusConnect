@@ -209,7 +209,7 @@ function PostDetails() {
   return (
     <div className="min-h-[92vh] bg-gray-100">
       <div className="p-4 sm:p-6 max-w-4xl mx-auto">
-        <div className="bg-white p-4 sm:p-6 shadow rounded-xl border border-gray-200 mb-8">
+        <div className="bg-gray-100 p-4 sm:p-6 shadow rounded-xl border border-gray-200 mb-8">
           <div className="flex justify-between items-start mb-4">
             <h2 className="text-2xl sm:text-3xl font-bold">{post.title}</h2>
             {post.user?.email === currentUser && (
@@ -230,7 +230,7 @@ function PostDetails() {
               <span className="font-medium">
                 {post.user?.email === currentUser
                   ? "You"
-                  : post.user?.name || "Anonymous User"}
+                  : "Anonymous User"}
               </span>
             </span>
             <span>{new Date(post.createdAt).toLocaleString()}</span>
@@ -260,7 +260,7 @@ function PostDetails() {
                     className={`p-4 rounded-xl border hover:scale-[1.02] hover:border-blue-300 transition duration-300 shadow-sm ${
                       isBest
                         ? "bg-green-50 border-green-400"
-                        : "bg-white border-gray-200"
+                        : "bg-gray-100 border-gray-200"
                     }`}
                   >
                     {(isBest || isMyAnswer) && (
@@ -287,7 +287,7 @@ function PostDetails() {
                       <span>
                         {isMyAnswer
                           ? "You"
-                          : answer.user?.name || "Anonymous User"}
+                          : "Anonymous User"}
                       </span>
                       <div className="flex items-center gap-3">
                         <button
@@ -324,7 +324,7 @@ function PostDetails() {
         </div>
 
         {token ? (
-          <div className="bg-white p-4 sm:p-6 shadow rounded-xl border border-gray-200">
+          <div className="bg-gray-100 p-4 sm:p-6 shadow rounded-xl border border-gray-200">
             <h3 className="text-lg sm:text-xl font-bold mb-4">Your Answer</h3>
             <form onSubmit={handleAnswerSubmit}>
               <textarea

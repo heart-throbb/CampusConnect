@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Home() {
+  // !! is bcz we want the result always in boolean
   const loggedIn = useSelector((state) => !!state.auth.token);
 
   return (

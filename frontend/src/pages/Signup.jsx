@@ -55,25 +55,25 @@ function Signup() {
 
   return (
     <div className="flex justify-center items-center grow min-h-[50vh] lg:min-h-[92vh] px-4 bg-gray-100">
-      <div className="w-full max-w-md mx-auto mt-10 p-6 drop-shadow-2xl rounded-2xl bg-white border border-gray-300">
+      <div className="w-full max-w-md mx-auto mt-10 p-6 drop-shadow-2xl rounded-2xl bg-gray-100 border border-gray-300">
         <h2 className="text-2xl font-bold mb-4 text-center">Signup</h2>
         <form onSubmit={handleSubmit}>
           <input
-            className="w-full border border-gray-400 bg-gray-50 rounded p-2 mb-3 outline-none focus:border-blue-600"
+            className="w-full border border-gray-300 bg-gray-50 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             placeholder="Full Name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
-            className="w-full border border-gray-400 bg-gray-50 rounded p-2 mb-3 outline-none focus:border-blue-600"
+            className="w-full border border-gray-300 bg-gray-50 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             placeholder="Email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="w-full border border-gray-400 bg-gray-50 rounded p-2 mb-4 outline-none focus:border-blue-600"
+            className="w-full border border-gray-300 bg-gray-50 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             type="password"
             placeholder="Password"
             value={password}
