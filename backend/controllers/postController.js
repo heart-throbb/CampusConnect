@@ -16,7 +16,9 @@ const getPostById = async (req, res) => {
     const post = await Post.findById(req.params.id)
       .populate("user", "name email")
       .populate("answers.user", "name email");
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
     res.json(post);
   } catch (error) {
     res.status(500).json({ message: "Server Error while fetching the post" });
@@ -43,8 +45,14 @@ const createPost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post not found" });
-    if (post.user.toString() !== req.user.userId) return res.status(401).json({ message: "Not authorized to delete this post" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    if (post.user.toString() !== req.user.userId) {
+      return res
+        .status(401)
+        .json({ message: "Not authorized to delete this post" });
+    }
     await post.deleteOne();
     res.json({ message: "Post removed successfully" });
   } catch (error) {
@@ -56,7 +64,9 @@ const createAnswer = async (req, res) => {
   try {
     const { content } = req.body;
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
     const newAnswer = { content, user: req.user.userId };
     post.answers.unshift(newAnswer);
     await post.save();
@@ -70,10 +80,18 @@ const createAnswer = async (req, res) => {
 const deleteAnswer = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
     const answer = post.answers.id(req.params.answerId);
-    if (!answer) return res.status(404).json({ message: "Answer not found" });
-    if (answer.user.toString() !== req.user.userId) return res.status(401).json({ message: "Not authorized to delete this answer" });
+    if (!answer) {
+      return res.status(404).json({ message: "Answer not found" });
+    }
+    if (answer.user.toString() !== req.user.userId) {
+      return res
+        .status(401)
+        .json({ message: "Not authorized to delete this answer" });
+    }
     answer.deleteOne();
     await post.save();
     res.json({ message: "Answer removed successfully" });
@@ -86,13 +104,17 @@ const voteAnswer = async (req, res) => {
   try {
     const { type } = req.body;
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
     const answer = post.answers.id(req.params.answerId);
-    if (!answer) return res.status(404).json({ message: "Answer not found" });
-    
+    if (!answer) {
+      return res.status(404).json({ message: "Answer not found" });
+    }
+
     const currentUserId = req.user.userId;
     const previousVoteType = answer.votesMap.get(currentUserId);
-    
+
     if (previousVoteType === type) {
       answer.votesMap.delete(currentUserId);
       answer.votes += type === "up" ? -1 : 1;

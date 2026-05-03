@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost } from "../store/postSlice";
+import { updatePost } from "../store/postSlice";
 import { AVAILABLE_TAGS } from "../data";
+import { API_URL } from "../config";
 
 const TAG_COLORS = {
   DSA: "bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200",
@@ -45,7 +46,9 @@ function CreatePost() {
   const [selectedTags, setSelectedTags] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentUserEmail = useSelector((state) => state.auth.user?.email);
+
+  // token to check if usr is authorized to do
+  const token = useSelector((state) => state.auth.token);
 
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
@@ -53,7 +56,7 @@ function CreatePost() {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !content) {
       Swal.fire({
@@ -64,24 +67,41 @@ function CreatePost() {
       });
       return;
     }
-    dispatch(
-      createPost({ title, content, currentUserEmail, tags: selectedTags }),
-    );
-    Swal.fire({
-      icon: "success",
-      title: "Post Created!",
-      text: "Your question has been posted successfully.",
-      timer: 1500,
-      showConfirmButton: false,
-    }).then(() => {
-      navigate("/questions");
-    });
+
+    try {
+      const response = await fetch(`${API_URL}/posts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title, content, tags: selectedTags }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        dispatch(updatePost(data));
+        Swal.fire({
+          icon: "success",
+          title: "Post Created!",
+          text: "Your question has been posted successfully.",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          navigate("/questions");
+        });
+      } else {
+        Swal.fire("Error", data.message || "Could not create post", "error");
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Network Error", "Could not reach the server.", "error");
+    }
   };
 
   return (
     <div className="min-h-[92vh] bg-gray-100">
-      <div className="flex justify-center items-center grow px-4 lg:min-h-[92vh]">
-        <div className="w-full max-w-2xl mx-auto bg-gray-100 p-8 shadow-2xl rounded-2xl border border-gray-200 transition-all my-8">
+      <div className="flex justify-center items-center grow px-4 py-8 lg:min-h-[92vh]">
+        <div className="w-full max-w-2xl mx-auto bg-gray-100 p-8 shadow-2xl rounded-2xl border border-gray-200 transition-all">
           <h2 className="text-3xl font-extrabold mb-6 text-gray-800">
             Ask a Question
           </h2>
@@ -139,13 +159,13 @@ function CreatePost() {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition-all hover:scale-90"
+                className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition-all hover:scale-[0.98] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-md hover:shadow-lg transition-all transform hover:scale-95"
+                className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-md hover:shadow-lg transition-all transform hover:scale-[0.98] cursor-pointer"
               >
                 Post Question
               </button>

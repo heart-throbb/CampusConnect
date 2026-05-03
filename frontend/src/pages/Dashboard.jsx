@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
-import { deletePost } from "../store/postSlice";
+import { removePost } from "../store/postSlice";
 import { AVAILABLE_TAGS } from "../data";
+import { API_URL } from "../config";
 
 const TAG_COLORS = {
   DSA: "bg-purple-100 text-purple-700 border-purple-300",
@@ -37,10 +38,10 @@ const TAG_ACTIVE = {
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
   const currentUser = useSelector((state) => state.auth.user?.email);
   const rawPosts = useSelector((state) => state.posts.items);
   const navigate = useNavigate();
-
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState(null);
 
@@ -72,10 +73,30 @@ function Dashboard() {
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(deletePost(postId));
-        Swal.fire("Deleted!", "Your post has been deleted.", "success");
+        try {
+          const response = await fetch(`${API_URL}/posts/${postId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            dispatch(removePost(postId));
+            Swal.fire("Deleted!", "Your post has been deleted.", "success");
+          } else {
+            const data = await response.json();
+            Swal.fire(
+              "Error!",
+              data.message || "Failed to delete post",
+              "error",
+            );
+          }
+        } catch (error) {
+          Swal.fire("Network Error", "Could not reach the server.", "error");
+        }
       }
     });
   };
@@ -118,7 +139,7 @@ function Dashboard() {
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
             >
               ✕
             </button>
@@ -154,7 +175,7 @@ function Dashboard() {
             filtered.map((post) => (
               <div
                 key={post._id}
-                className="bg--gray-100 p-4 sm:p-5 shadow-md rounded-xl border hover:border-blue-300 border-gray-200 hover:scale-[1.02] transition hover:shadow-xl duration-300"
+                className="bg--gray-100 p-4 sm:p-5 shadow-md rounded-xl border hover:border-blue-300 border-gray-200 hover:scale-[1.02] transition hover:shadow-xl duration-300 bg-white"
               >
                 <h3 className="font-bold text-lg sm:text-xl mb-1">
                   {post.title}
