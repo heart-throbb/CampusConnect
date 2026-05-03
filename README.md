@@ -1,19 +1,39 @@
 # CampusConnect
-CampusConnect is a collaborative platform that connects students, enabling them to ask questions, share knowledge, and engage with peers to solve academic and real-world problems
-=======
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CampusConnect is a collaborative platform that connects students, enabling them to ask questions, share knowledge, and engage with peers to solve academic and real-world problems.
 
-Currently, two official plugins are available:
+## Features
+- **User Authentication:** Sign up and login securely with JWT.
+- **Ask & Answer:** Post questions and receive answers from classmates.
+- **Voting System:** Upvote and downvote answers to highlight the best solutions.
+- **Personal Dashboard:** Track and manage the questions you've asked.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **Frontend:** React, Vite, Redux Toolkit, Tailwind CSS.
+- **Backend:** Node.js, Express.js, MongoDB + Mongoose.
 
-## React Compiler
+## How to Run locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Prerequisites
+- [Node.js](https://nodejs.org/) installed
+- MongoDB installed and running locally, OR you can replace the URI in the `.env` file with a MongoDB Atlas cloud URI.
 
-## Expanding the ESLint configuration
+### 2. Run the Backend
+Open a terminal and navigate to the `backend` folder:
+```bash
+cd backend
+npm install
+```
+Rename the `.env.example` file to `.env` to configure your environment variables (the defaults work out of the box for local MongoDB).
+```bash
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 3. Run the Frontend
+Open a new terminal and navigate to the `frontend` folder:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The console will outline the local address (e.g. `http://localhost:5173`) where you can view the application in your browser!
